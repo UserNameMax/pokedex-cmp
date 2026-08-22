@@ -1,35 +1,81 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+# Pokédex — каркас на Compose Multiplatform
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Шаблон к воркшопу **ПЗ1 «Каркас на CMP»**, 19.09, очно.
+Курс кроссплатформенной разработки, группа ПИН-252т.
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## До пары
 
-### Running the apps
+Обязательно, иначе потеряете полпары на Gradle:
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+```bash
+git clone <url> && cd pokedex-cmp
+git switch -c feature/lab-1_frame w1-start
+./gradlew :desktopApp:run
+```
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- Desktop app:
-  - Hot reload: `./gradlew :desktopApp:hotRun --auto`
-  - Standard run: `./gradlew :desktopApp:run`
-- Web app:
-  - Wasm target (faster, modern browsers): `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
-  - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+Вторая строка обязательна. Без неё `git checkout w1-start` оставляет вас в
+detached HEAD, и первый же коммит окажется ни в одной ветке — Git о нём
+предупредит одной строкой, которую на паре никто не прочитает.
 
----
+Открылось окно с пустым экраном — вы готовы. Проверка идёт в первые восемь минут занятия.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+## Запуск
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+```bash
+./gradlew :desktopApp:run                        # основной таргет воркшопа
+./gradlew :webApp:wasmJsBrowserDevelopmentRun    # понадобится на чекпойнте 2
+./gradlew :androidApp:assembleDebug              # у кого настроен SDK
+```
+
+Воркшоп ведётся на **desktop**: он стартует за секунды и не требует эмулятора. Web
+поднимается один раз — посмотреть, что делает кнопка «назад» в браузере. Android — в конце,
+по желанию.
+
+iOS собирается, но нужен macOS и Xcode — бонус сверх программы.
+
+## Чекпойнты и догон
+
+Каждый чекпойнт помечен тегом. Отстали — не догоняйте вручную, возьмите ветку от нужного тега:
+
+```bash
+git add -A && git commit -m wip
+git switch -c catchup-cp3 w1-cp3
+```
+
+Своя работа при этом остаётся в вашей ветке, вернуться к ней —
+`git switch feature/lab-1_frame`.
+
+Теги: `w1-start` → `w1-cp1` … `w1-cp5` → `w1-end`. Каждый собирается и запускается.
+
+## Что уже лежит в проекте
+
+| Путь | Что это |
+|---|---|
+| `data/Pokemon.kt` | модель записи. Поля названы как в ответе PokéAPI — в В2 сюда встанет сеть |
+| `data/MockPokemons.kt` | 20 записей с PokéAPI: типы, характеристики, способности, цепочка эволюции. Единственное место с предметными данными |
+| `ui/AppScaffold.kt` | шапка приложения и слот под действия в правом углу |
+| `ui/CardSurface.kt` | подложка под карточку списка |
+| `ui/TypeChip.kt`, `ui/PokemonTypeStyle.kt` | бейдж типа и палитра типов |
+| `ui/StatBar.kt` | строка характеристики с полосой |
+| `ui/PokemonSprite.kt` | спрайт по номеру записи |
+| `composeResources/drawable/` | 20 спрайтов **локально**: на паре нельзя закладываться на Wi-Fi |
+| `composeResources/values`, `values-en` | подписи интерфейса, две локали |
+| `tools/check-strings.py` | сверяет ключи локалей. Понадобится на чекпойнте 4 |
+
+Всё остальное — список, карточку, навигацию, тему, подписи — пишете вы.
+
+## Правила, по которым принимается работа
+
+**Строк в коде нет.** Любая подпись, которую видит пользователь, лежит в
+`composeResources`. Проверяется скриптом:
+
+```bash
+python3 tools/check-strings.py
+```
+
+**Данные на английском — это не недоделка.** В PokéAPI четырнадцать локалей, и русского
+среди них нет. Локализуется интерфейс, а не содержимое каталога.
+
+**Навигация — Compose Navigation.** Не потому, что она лучше, а потому, что в декабре
+курс сравнивает CMP с Flutter. Если у одного маршрутная навигация, а у другого
+компонентная, сравнятся философии навигации, а не стеки.

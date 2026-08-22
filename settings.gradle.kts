@@ -1,4 +1,4 @@
-rootProject.name = "workshop"
+rootProject.name = "pokedex"
 
 pluginManagement {
     repositories {

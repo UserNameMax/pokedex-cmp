@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		B6E72FFD40C8076F7A12124A /* workshop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = workshop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6E72FFD40C8076F7A12124A /* Pokedex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokedex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,7 +59,7 @@
 		E2218EA0E3019E7C7DE22156 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B6E72FFD40C8076F7A12124A /* workshop.app */,
+				B6E72FFD40C8076F7A12124A /* Pokedex.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			packageProductDependencies = (
 			);
 			productName = iosApp;
-			productReference = B6E72FFD40C8076F7A12124A /* workshop.app */;
+			productReference = B6E72FFD40C8076F7A12124A /* Pokedex.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

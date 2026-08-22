@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_title">Покедекс</string>
+    <string name="start_hint">Пусто. Здесь будет список — его пишете вы. В состоянии уже %1$s записей.</string>
+    <string name="action_toggle_theme">Переключить тему</string>
+    <string name="pokemon_number">#%1$s</string>
+    <string name="stat_hp">Здоровье</string>
+    <string name="stat_attack">Атака</string>
+    <string name="stat_defense">Защита</string>
+    <string name="stat_special_attack">Спец. атака</string>
+    <string name="stat_special_defense">Спец. защита</string>
+    <string name="stat_speed">Скорость</string>
+</resources>

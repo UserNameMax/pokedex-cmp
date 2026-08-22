@@ -65,6 +65,9 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.navigation3.runtime)
+            implementation(libs.navigation3.ui)
+            implementation(libs.kotlinx.coroutinesCore)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -77,4 +80,18 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+composeCompiler {
+    // Отчёты о стабильности типов и о том, какие функции пропускаемы.
+    // Нужны здесь, чтобы проверить класс состояния MVI, и ещё раз на ПЗ7 12.12,
+    // где студенты открывают такой отчёт на собственном коде.
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    metricsDestination = layout.buildDirectory.dir("compose_compiler")
+}
+
+compose.resources {
+    // Res генерируется internal, и подписи не видны из модулей-точек входа —
+    // заголовок окна desktop без этого не сделать ресурсом.
+    publicResClass = true
+    packageOfResClass = "band.effective.education.crossplatform.resources"
 }
