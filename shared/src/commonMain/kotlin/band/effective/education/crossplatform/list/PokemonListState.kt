@@ -1,6 +1,6 @@
 package band.effective.education.crossplatform.list
 
-import band.effective.education.crossplatform.data.Pokemon
+import band.effective.education.crossplatform.ui.model.PokemonCardUi
 
 /**
  * Состояние экрана списка — **всё**, что нужно нарисовать, одним объектом.
@@ -10,5 +10,5 @@ import band.effective.education.crossplatform.data.Pokemon
  * классе — значит оно нарисовано мимо архитектуры.
  */
 data class PokemonListState(
-    val items: List<Pokemon> = emptyList(),
+    val items: List<PokemonCardUi> = emptyList(),
 )

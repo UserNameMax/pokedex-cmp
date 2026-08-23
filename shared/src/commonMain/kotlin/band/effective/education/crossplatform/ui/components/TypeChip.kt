@@ -1,4 +1,4 @@
-package band.effective.education.crossplatform.ui
+package band.effective.education.crossplatform.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme

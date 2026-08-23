@@ -1,6 +1,6 @@
 package band.effective.education.crossplatform.ui
 
-import band.effective.education.crossplatform.data.Pokemon
+import band.effective.education.crossplatform.domain.Pokemon
 import org.jetbrains.compose.resources.DrawableResource
 import band.effective.education.crossplatform.resources.Res
 import band.effective.education.crossplatform.resources.*

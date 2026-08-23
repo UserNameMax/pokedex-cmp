@@ -1,4 +1,4 @@
-package band.effective.education.crossplatform.ui
+package band.effective.education.crossplatform.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,19 +1,21 @@
-package band.effective.education.crossplatform.data
+package band.effective.education.crossplatform.domain
 
 /**
- * Одна запись каталога.
+ * Одна запись каталога — доменная модель.
+ *
+ * Здесь данные такими, какие они есть, а не такими, как их показывают: имя
+ * строчными (`bulbasaur`), номер числом, рост в дециметрах, вес в гектограммах.
+ * Как всё это выглядит на экране, решает UI-модель, а не этот класс.
  *
  * Поля названы так же, как в ответе PokéAPI (`/api/v2/pokemon/{id}` и
- * `/pokemon-species/{id}`), чтобы в В2 сюда встала сериализация без переименований.
- * Единицы там же: рост в дециметрах, вес в гектограммах — переводить в человеческие
- * придётся самим.
+ * `/pokemon-species/{id}`), чтобы в В2 сеть легла сюда без переименований.
  */
 data class Pokemon(
     val id: Int,
     val name: String,
     /** Вид: «Seed Pokémon». Приходит из species и только на английском. */
     val genus: String,
-    val types: List<String>,
+    val types: List<PokemonType>,
     val heightDm: Int,
     val weightHg: Int,
     val baseExperience: Int,
