@@ -17,4 +17,11 @@
     <string name="section_abilities">Способности</string>
     <string name="section_evolution">Эволюция</string>
     <string name="ability_hidden">скрытая</string>
+    <string name="type_bug">Насекомое</string>
+    <string name="type_fire">Огонь</string>
+    <string name="type_flying">Полёт</string>
+    <string name="type_grass">Трава</string>
+    <string name="type_normal">Обычный</string>
+    <string name="type_poison">Яд</string>
+    <string name="type_water">Вода</string>
 </resources>

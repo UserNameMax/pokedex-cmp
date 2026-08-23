@@ -27,3 +27,18 @@ compose.desktop {
         }
     }
 }
+// Задача run создаётся плагином Compose уже после разбора скрипта,
+// поэтому настраиваем её через withType, а не по имени.
+tasks.withType<JavaExec>().configureEach {
+    if (name != "run") return@configureEach
+    // Проверить вторую локаль, не меняя язык всей системы:
+    //   ./gradlew :desktopApp:run -Plocale=en
+    //
+    // Дописываем в doFirst, а не сразу: плагин Compose подставляет свой
+    // -Duser.language уже после разбора скрипта, и наш аргумент он бы затёр.
+    // У JVM выигрывает последний -D с тем же ключом.
+    val locale = providers.gradleProperty("locale").orNull
+    if (locale != null) {
+        doFirst { jvmArgs("-Duser.language=$locale", "-Duser.country=") }
+    }
+}

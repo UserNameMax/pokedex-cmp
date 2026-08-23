@@ -17,4 +17,11 @@
     <string name="section_abilities">Abilities</string>
     <string name="section_evolution">Evolution</string>
     <string name="ability_hidden">hidden</string>
+    <string name="type_bug">Bug</string>
+    <string name="type_fire">Fire</string>
+    <string name="type_flying">Flying</string>
+    <string name="type_grass">Grass</string>
+    <string name="type_normal">Normal</string>
+    <string name="type_poison">Poison</string>
+    <string name="type_water">Water</string>
 </resources>
