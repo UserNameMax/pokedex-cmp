@@ -6,13 +6,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 /**
  * Готовая подложка под карточку списка: скруглённые углы, тень, отступ содержимого.
  *
- * Используйте её в своей карточке, чтобы не верстать одно и то же дважды.
+ * Цвет берётся из токенов темы, а не задаётся числом. Числовой цвет в переключении
+ * темы не участвует — и заодно уносит с собой контрастный цвет текста, потому что
+ * Surface выводит его из своего цвета.
  */
 @Composable
 fun CardSurface(
@@ -22,7 +23,7 @@ fun CardSurface(
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        color = Color(0xFFFFFFFF),
+        color = MaterialTheme.colorScheme.surfaceContainer,
         tonalElevation = 1.dp,
         shadowElevation = 1.dp,
     ) {
