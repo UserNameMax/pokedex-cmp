@@ -8,7 +8,7 @@
 Обязательно, иначе потеряете полпары на Gradle:
 
 ```bash
-git clone <url> && cd pokedex-cmp
+git clone https://github.com/UserNameMax/pokedex-cmp.git && cd pokedex-cmp
 git switch -c feature/lab-1_frame w1-start
 ./gradlew :desktopApp:run
 ```
