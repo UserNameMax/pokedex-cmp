@@ -10,5 +10,6 @@ import band.effective.education.crossplatform.ui.model.PokemonCardUi
  * классе — значит оно нарисовано мимо архитектуры.
  */
 data class PokemonListState(
+    val query: String = "",
     val items: List<PokemonCardUi> = emptyList(),
 )

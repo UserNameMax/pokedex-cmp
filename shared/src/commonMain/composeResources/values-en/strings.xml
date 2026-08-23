@@ -24,4 +24,5 @@
     <string name="type_normal">Normal</string>
     <string name="type_poison">Poison</string>
     <string name="type_water">Water</string>
+    <string name="search_hint">Search by name</string>
 </resources>

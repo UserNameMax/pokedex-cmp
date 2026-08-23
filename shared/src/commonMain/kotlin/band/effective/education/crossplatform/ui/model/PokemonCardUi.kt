@@ -1,6 +1,8 @@
 package band.effective.education.crossplatform.ui.model
 
 import band.effective.education.crossplatform.domain.Pokemon
+import band.effective.education.crossplatform.domain.PokemonRepository
+import band.effective.education.crossplatform.domain.getPokemons
 import band.effective.education.crossplatform.ui.spriteOf
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -28,3 +30,7 @@ fun Pokemon.toCardUi(): PokemonCardUi = PokemonCardUi(
 )
 
 fun List<Pokemon>.toCardsUi(): List<PokemonCardUi> = map { it.toCardUi() }
+
+/** Фильтр и маппинг одним вызовом: ровно то, что нужно экрану списка. */
+suspend fun PokemonRepository.getCards(filter: String?): List<PokemonCardUi> =
+    getPokemons(filter).toCardsUi()

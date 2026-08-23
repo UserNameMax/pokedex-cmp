@@ -5,8 +5,9 @@ import androidx.lifecycle.viewModelScope
 import band.effective.education.crossplatform.Screen
 import band.effective.education.crossplatform.data.PokemonRepositoryImpl
 import band.effective.education.crossplatform.domain.PokemonRepository
-import band.effective.education.crossplatform.ui.model.toCardsUi
+import band.effective.education.crossplatform.ui.model.getCards
 import band.effective.education.crossplatform.ui.navigation.Navigator
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,8 +39,20 @@ class PokemonListViewModel(
     val state: StateFlow<PokemonListState> = _state.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val items = repository.getPokemons().toCardsUi()
+        search(filter = null)
+    }
+
+    private var searchJob: Job? = null
+
+    /**
+     * Запрос в поле меняется сразу, список — когда репозиторий ответит.
+     * Прошлый поиск отменяется: иначе его ответ мог бы прийти позже нового
+     * и затереть список.
+     */
+    private fun search(filter: String?) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            val items = repository.getCards(filter)
             _state.update { it.copy(items = items) }
         }
     }
@@ -47,6 +60,11 @@ class PokemonListViewModel(
     fun onIntent(intent: PokemonListIntent) {
         when (intent) {
             is PokemonListIntent.CardClicked -> navigator.addToBackStack(Screen.Detail(intent.id))
+
+            is PokemonListIntent.QueryChanged -> {
+                _state.update { it.copy(query = intent.value) }
+                search(filter = intent.value)
+            }
         }
     }
 }

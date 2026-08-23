@@ -24,4 +24,5 @@
     <string name="type_normal">Обычный</string>
     <string name="type_poison">Яд</string>
     <string name="type_water">Вода</string>
+    <string name="search_hint">Поиск по имени</string>
 </resources>
