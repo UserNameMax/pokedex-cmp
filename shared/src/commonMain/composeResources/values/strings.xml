@@ -9,4 +9,12 @@
     <string name="stat_special_attack">Спец. атака</string>
     <string name="stat_special_defense">Спец. защита</string>
     <string name="stat_speed">Скорость</string>
+    <string name="action_back">Назад</string>
+    <string name="detail_height">Рост: %1$s м</string>
+    <string name="detail_weight">Вес: %1$s кг</string>
+    <string name="detail_base_xp">Базовый опыт: %1$s</string>
+    <string name="section_stats">Характеристики</string>
+    <string name="section_abilities">Способности</string>
+    <string name="section_evolution">Эволюция</string>
+    <string name="ability_hidden">скрытая</string>
 </resources>

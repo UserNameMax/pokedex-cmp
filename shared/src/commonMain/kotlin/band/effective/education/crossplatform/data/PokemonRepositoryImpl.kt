@@ -11,4 +11,6 @@ import band.effective.education.crossplatform.domain.PokemonRepository
  */
 class PokemonRepositoryImpl : PokemonRepository {
     override suspend fun getPokemons(): List<Pokemon> = mockPokemons
+
+    override suspend fun getPokemon(id: Int): Pokemon = mockPokemons.first { it.id == id }
 }

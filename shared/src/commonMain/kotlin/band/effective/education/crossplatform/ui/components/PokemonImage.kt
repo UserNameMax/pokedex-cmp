@@ -11,24 +11,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 
 @Composable
 fun PokemonImage(
     painter: Painter,
-    bgColor: Color
+    bgColor: Color,
+    size: Dp,
+    pokemonSize: Dp,
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(80.dp)
+            .size(size)
             .clip(CircleShape)
             .background(bgColor),
     ) {
         Image(
             painter = painter,
             contentDescription = null,
-            modifier = Modifier.size(64.dp),
+            modifier = Modifier.size(pokemonSize),
         )
     }
 }

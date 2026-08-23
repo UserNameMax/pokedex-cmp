@@ -9,4 +9,5 @@ package band.effective.education.crossplatform.domain
  */
 interface PokemonRepository {
     suspend fun getPokemons(): List<Pokemon>
+    suspend fun getPokemon(id: Int): Pokemon
 }

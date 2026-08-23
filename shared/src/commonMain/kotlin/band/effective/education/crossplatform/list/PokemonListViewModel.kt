@@ -2,9 +2,11 @@ package band.effective.education.crossplatform.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import band.effective.education.crossplatform.Screen
 import band.effective.education.crossplatform.data.PokemonRepositoryImpl
 import band.effective.education.crossplatform.domain.PokemonRepository
 import band.effective.education.crossplatform.ui.model.toCardsUi
+import band.effective.education.crossplatform.ui.navigation.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,11 +25,12 @@ import kotlinx.coroutines.launch
  * моков напрямую. В В2 за этим интерфейсом встанет сеть, и поменяется только
  * реализация в data-слое — если поменяется что-то ещё, слои разложены неверно.
  *
- * @param onOpenCard навигация наружу. ViewModel не знает про NavController:
- * иначе экран нельзя было бы ни переиспользовать, ни протестировать.
+ * @param navigator навигация наружу. ViewModel не знает про NavDisplay и его
+ * бэкстек — только про [Navigator]: иначе экран нельзя было бы ни
+ * переиспользовать, ни протестировать.
  */
 class PokemonListViewModel(
-    private val onOpenCard: (Int) -> Unit,
+    private val navigator: Navigator,
     private val repository: PokemonRepository = PokemonRepositoryImpl(),
 ) : ViewModel() {
 
@@ -43,7 +46,7 @@ class PokemonListViewModel(
 
     fun onIntent(intent: PokemonListIntent) {
         when (intent) {
-            is PokemonListIntent.CardClicked -> onOpenCard(intent.id)
+            is PokemonListIntent.CardClicked -> navigator.addToBackStack(Screen.Detail(intent.id))
         }
     }
 }

@@ -9,4 +9,12 @@
     <string name="stat_special_attack">Sp. Attack</string>
     <string name="stat_special_defense">Sp. Defense</string>
     <string name="stat_speed">Speed</string>
+    <string name="action_back">Back</string>
+    <string name="detail_height">Height: %1$s m</string>
+    <string name="detail_weight">Weight: %1$s kg</string>
+    <string name="detail_base_xp">Base experience: %1$s</string>
+    <string name="section_stats">Base stats</string>
+    <string name="section_abilities">Abilities</string>
+    <string name="section_evolution">Evolution</string>
+    <string name="ability_hidden">hidden</string>
 </resources>

@@ -17,8 +17,10 @@ fun PokemonCard(pokemon: PokemonCardUi, modifier: Modifier = Modifier) {
     CardSurface(modifier) {
         Row {
             PokemonImage(
-                painterResource(pokemon.sprite),
-                pokemon.types.first().color.copy(alpha = 0.16f)
+                painter = painterResource(pokemon.sprite),
+                bgColor = pokemon.types.first().color.copy(alpha = 0.16f),
+                size = 80.dp,
+                pokemonSize = 64.dp
             )
             Spacer(Modifier.width(16.dp))
             PokemonBaseStats(
