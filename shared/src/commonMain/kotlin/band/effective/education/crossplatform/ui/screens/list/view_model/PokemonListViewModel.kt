@@ -9,12 +9,18 @@ import band.effective.education.crossplatform.ui.model.toCardsUi
 import band.effective.education.crossplatform.ui.navigation.Navigator
 import band.effective.education.crossplatform.ui.screens.list.model.PokemonListIntent
 import band.effective.education.crossplatform.ui.screens.list.model.PokemonListState
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+
+private const val SEARCH_DEBOUNCE_MS = 400L
 
 /**
  * Единственное место, где состояние экрана меняется.
@@ -27,6 +33,7 @@ import kotlinx.coroutines.launch
  * бэкстек — только про [Navigator]: иначе экран нельзя было бы ни
  * переиспользовать, ни протестировать.
  */
+@OptIn(FlowPreview::class)
 class PokemonListViewModel(
     private val navigator: Navigator,
     private val getPokemonInteractor: GetPokemonInteractor,
@@ -39,6 +46,18 @@ class PokemonListViewModel(
     private val query = MutableStateFlow("")
 
     /**
+     * Запрос, который реально применён к списку, — не то же самое, что текст
+     * поля. Дебаунс — надстройка над готовым поиском: фильтрация не поменялась,
+     * поменялось только КОГДА она получает новый запрос. Поле при этом
+     * показывает живой [query] и от нажатий не отстаёт.
+     */
+    private val appliedQuery: StateFlow<String> = query
+        .drop(1)
+        .debounce(SEARCH_DEBOUNCE_MS)
+        .distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, "")
+
+    /**
      * Состояние экрана — чистая функция от входов: списка, запроса и хода
      * загрузки. Какой из вариантов суммы показать, решает пара «есть ли что
      * показать» и «как прошла последняя страница».
@@ -46,8 +65,9 @@ class PokemonListViewModel(
     val state: StateFlow<PokemonListState> = combine(
         getPokemonInteractor.pokemonList,
         query,
+        appliedQuery,
         getPokemonInteractor.status,
-    ) { pokemon, query, status ->
+    ) { pokemon, query, appliedQuery, status ->
         if (pokemon.isEmpty()) {
             when (status) {
                 LoadStatus.Loading -> PokemonListState.Loading
@@ -60,7 +80,7 @@ class PokemonListViewModel(
             // карточки появляются по одной, а внизу — «загружается».
             PokemonListState.Success(
                 query = query,
-                items = pokemon.toCardsUi(query),
+                items = pokemon.toCardsUi(appliedQuery),
                 isLoadingMore = status is LoadStatus.Loading,
                 loadMoreFailed = status is LoadStatus.Failed,
             )
