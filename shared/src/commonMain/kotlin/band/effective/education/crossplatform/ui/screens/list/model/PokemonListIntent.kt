@@ -12,4 +12,7 @@ package band.effective.education.crossplatform.ui.screens.list.model
 sealed interface PokemonListIntent {
     data class CardClicked(val id: Int) : PokemonListIntent
     data class QueryChanged(val value: String) : PokemonListIntent
+
+    /** Экран прокрутили близко к концу. Сам список не грузит — только сообщает. */
+    data object LoadMoreRequested : PokemonListIntent
 }

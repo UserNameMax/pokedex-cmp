@@ -12,4 +12,5 @@ import band.effective.education.crossplatform.ui.model.PokemonCardUi
 data class PokemonListState(
     val query: String = "",
     val items: List<PokemonCardUi> = emptyList(),
+    val isLoadingMore: Boolean = false,
 )

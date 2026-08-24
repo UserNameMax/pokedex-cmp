@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
 
 /**
  * Дирижёр каталога: сам ничего не хранит и не грузит, а решает, кого и в каком
@@ -27,8 +28,22 @@ class GetPokemonInteractor(
     /** Меняет его только дирижёр — снаружи статус не выставить. */
     val status: StateFlow<LoadStatus> = _status.asStateFlow()
 
+    /** Одна загрузка за раз: координация параллельных команд — дело дирижёра. */
+    private val mutex = Mutex()
+
+    /**
+     * Следующая страница. Вызов, пока идёт загрузка, ничего не делает: прокрутка
+     * просит «ещё» много раз подряд, а запрос на каждый кадр нам не нужен.
+     */
     suspend fun loadMore() {
-        loadNextPage()
+        // tryLock, а не isLocked + withLock: между проверкой и захватом второй
+        // вызов успел бы проскочить.
+        if (!mutex.tryLock()) return
+        try {
+            loadNextPage()
+        } finally {
+            mutex.unlock()
+        }
     }
 
     /** Сначала то, что уже лежит локально; не нашлось — из [remote]. Сбой хранилища наружу как есть. */

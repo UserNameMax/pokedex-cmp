@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import band.effective.education.crossplatform.Screen
 import band.effective.education.crossplatform.domain.GetPokemonInteractor
+import band.effective.education.crossplatform.domain.model.LoadStatus
 import band.effective.education.crossplatform.ui.model.toCardsUi
 import band.effective.education.crossplatform.ui.navigation.Navigator
 import band.effective.education.crossplatform.ui.screens.list.model.PokemonListIntent
@@ -37,15 +38,25 @@ class PokemonListViewModel(
      */
     private val query = MutableStateFlow("")
 
-    /** Состояние экрана — чистая функция от входов: списка и запроса. */
+    /** Состояние экрана — чистая функция от входов: списка, запроса и хода загрузки. */
     val state: StateFlow<PokemonListState> = combine(
         getPokemonInteractor.pokemonList,
         query,
-    ) { pokemon, query ->
-        PokemonListState(query = query, items = pokemon.toCardsUi(query))
+        getPokemonInteractor.status,
+    ) { pokemon, query, status ->
+        PokemonListState(
+            query = query,
+            items = pokemon.toCardsUi(query),
+            // Догрузка — это загрузка при уже показанном списке.
+            isLoadingMore = status is LoadStatus.Loading && pokemon.isNotEmpty(),
+        )
     }.stateIn(viewModelScope, SharingStarted.Lazily, PokemonListState())
 
     init {
+        loadNextPage()
+    }
+
+    private fun loadNextPage() {
         viewModelScope.launch { getPokemonInteractor.loadMore() }
     }
 
@@ -54,6 +65,8 @@ class PokemonListViewModel(
             is PokemonListIntent.CardClicked -> navigator.addToBackStack(Screen.Detail(intent.id))
 
             is PokemonListIntent.QueryChanged -> query.value = intent.value
+
+            is PokemonListIntent.LoadMoreRequested -> loadNextPage()
         }
     }
 }
