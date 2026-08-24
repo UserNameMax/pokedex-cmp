@@ -38,19 +38,34 @@ class PokemonListViewModel(
      */
     private val query = MutableStateFlow("")
 
-    /** Состояние экрана — чистая функция от входов: списка, запроса и хода загрузки. */
+    /**
+     * Состояние экрана — чистая функция от входов: списка, запроса и хода
+     * загрузки. Какой из вариантов суммы показать, решает пара «есть ли что
+     * показать» и «как прошла последняя страница».
+     */
     val state: StateFlow<PokemonListState> = combine(
         getPokemonInteractor.pokemonList,
         query,
         getPokemonInteractor.status,
     ) { pokemon, query, status ->
-        PokemonListState(
-            query = query,
-            items = pokemon.toCardsUi(query),
-            // Догрузка — это загрузка при уже показанном списке.
-            isLoadingMore = status is LoadStatus.Loading && pokemon.isNotEmpty(),
-        )
-    }.stateIn(viewModelScope, SharingStarted.Lazily, PokemonListState())
+        if (pokemon.isEmpty()) {
+            when (status) {
+                LoadStatus.Loading -> PokemonListState.Loading
+                is LoadStatus.Failed -> PokemonListState.Error(status.cause.message ?: "network error")
+                // Страница пришла пустой — показывать нечего, но это не ошибка.
+                LoadStatus.Loaded -> PokemonListState.Success(query = query, items = emptyList())
+            }
+        } else {
+            // Есть что показать — показываем всегда. Пока страница грузится,
+            // карточки появляются по одной, а внизу — «загружается».
+            PokemonListState.Success(
+                query = query,
+                items = pokemon.toCardsUi(query),
+                isLoadingMore = status is LoadStatus.Loading,
+                loadMoreFailed = status is LoadStatus.Failed,
+            )
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, PokemonListState.Loading)
 
     init {
         loadNextPage()
@@ -67,6 +82,10 @@ class PokemonListViewModel(
             is PokemonListIntent.QueryChanged -> query.value = intent.value
 
             is PokemonListIntent.LoadMoreRequested -> loadNextPage()
+
+            // Повтор — та же следующая страница: offset после провала не сдвинулся,
+            // и запросится ровно то, что не загрузилось. И с экрана ошибки, и снизу списка.
+            is PokemonListIntent.RetryRequested -> loadNextPage()
         }
     }
 }

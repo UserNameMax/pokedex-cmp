@@ -15,4 +15,7 @@ sealed interface PokemonListIntent {
 
     /** Экран прокрутили близко к концу. Сам список не грузит — только сообщает. */
     data object LoadMoreRequested : PokemonListIntent
+
+    /** Кнопка «Повторить» на экране ошибки. */
+    data object RetryRequested : PokemonListIntent
 }
