@@ -6,6 +6,8 @@ import band.effective.education.crossplatform.data.network.dto.flattenIds
 import band.effective.education.crossplatform.data.network.dto.idFromUrl
 import band.effective.education.crossplatform.domain.model.Pokemon
 import band.effective.education.crossplatform.domain.repository.PokemonRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import band.effective.education.crossplatform.core.suspendRunCatching
@@ -37,14 +39,17 @@ class NetworkPokemonRepository(
 
     override suspend fun getPokemon(id: Int): Result<Pokemon> = fetchPokemon(id)
 
-    /**
-     * Полная запись покемона [id]: три запроса к PokéAPI, склеенные в один [Pokemon].
-     * Пока по очереди — какие из них можно пустить одновременно, решает чекпойнт 4.
-     */
+    /** Полная запись покемона [id]: три запроса к PokéAPI, склеенные в один [Pokemon]. */
     private suspend fun fetchPokemon(id: Int): Result<Pokemon> = suspendRunCatching {
-        val detail = api.fetchDetail(id).getOrThrow()        // GET pokemon/{id}
-        val species = api.fetchSpecies(id).getOrThrow()      // GET pokemon-species/{id}
-        val evolution = api.fetchEvolutionChain(idFromUrl(species.evolutionChain.url)).getOrThrow()
-        createPokemon(detail, species, evolution.chain.flattenIds())
+        coroutineScope {
+            val detailAsync = async { api.fetchDetail(id) }    // GET pokemon/{id}
+            val speciesAsync = async { api.fetchSpecies(id) }  // GET pokemon-species/{id}
+            val detail = detailAsync.await().getOrThrow()
+            val species = speciesAsync.await().getOrThrow()
+            val evolutionChain = async {
+                api.fetchEvolutionChain(idFromUrl(species.evolutionChain.url))
+            }.await().getOrThrow()
+            createPokemon(detail, species, evolutionChain.chain.flattenIds())
+        }
     }
 }

@@ -8,20 +8,26 @@ import band.effective.education.crossplatform.ui.model.PokemonDetailUi
 import band.effective.education.crossplatform.ui.model.toDetailUi
 import band.effective.education.crossplatform.ui.navigation.Navigator
 import band.effective.education.crossplatform.ui.screens.detail.model.PokemonDetailIntent
+import band.effective.education.crossplatform.ui.screens.detail.model.PokemonDetailState
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Состояние детали меняется здесь, а не на экране — ровно как у списка.
+ * Деталь — свой запрос, свой экран, своя корутина. Ровно то, о чём был гвоздь
+ * лекции 27.10: `viewModelScope` — родитель. Ушли с экрана — по идее Navigation 3
+ * должен очистить ViewModel записи бэкстека через [rememberViewModelStoreNavEntryDecorator],
+ * и viewModelScope отменится сам, без единой ручной отмены.
  *
- * Своя ViewModel на каждую запись бэкстека: у bulbasaur и у venusaur, открытого
- * из его эволюции, разные экземпляры, и каждый знает только свой [pokemonId].
+ * **Не проверено на паре до конца.** `onCleared()` ни разу не сработал при живом
+ * прогоне на wasmJs (см. `WORKSHOP-SPEC-pz4.md`, открытые вопросы) — проверить на
+ * Android перед 31.10.
  *
- * Состояние — `null`, пока запись не прочитана. На моках ответ мгновенный, и
- * пустого кадра не видно; на чекпойнте 4 на его место встанет полноценное
- * «загружается» и «ошибка».
+ * @param navigator переход на соседа по эволюции — та же навигация наружу, что и у списка.
  */
 class PokemonDetailViewModel(
     private val pokemonId: Int,
@@ -29,25 +35,46 @@ class PokemonDetailViewModel(
     private val getPokemonInteractor: GetPokemonInteractor,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<PokemonDetailUi?>(null)
-    val state: StateFlow<PokemonDetailUi?> = _state.asStateFlow()
+    private val _state = MutableStateFlow<PokemonDetailState>(PokemonDetailState.Loading)
+    val state: StateFlow<PokemonDetailState> = _state.asStateFlow()
 
     init {
+        load()
+    }
+
+    private fun load() {
+        _state.value = PokemonDetailState.Loading
         viewModelScope.launch {
-            getPokemonInteractor.getById(pokemonId).fold(
-                onSuccess = { pokemon ->
-                    val evolution = pokemon.evolutionChain.mapNotNull { id -> getPokemonInteractor.getById(id).getOrNull() }
-                    _state.value = pokemon.toDetailUi(evolution)
-                },
-                // На моках не падает. Состояние ошибки появится на чекпойнте 4.
-                onFailure = { },
+            // Отмена сюда не доходит как ошибка: обёртка в PokeApi её
+            // пробрасывает, и корутина просто останавливается вместе с viewModelScope.
+            _state.value = loadDetail().fold(
+                onSuccess = { PokemonDetailState.Success(it) },
+                onFailure = { e -> PokemonDetailState.Error(e.message ?: "network error") },
             )
         }
+    }
+
+    private suspend fun loadDetail(): Result<PokemonDetailUi> {
+        // Сама запись — из уже загруженного списка, если она там есть, иначе три
+        // запроса, два из них параллельно (см. GetPokemonInteractor.getById).
+        val pokemon = getPokemonInteractor.getById(pokemonId).getOrElse { return Result.failure(it) }
+
+        // Соседи по эволюции: N независимых запросов, запущенных одновременно,
+        // а не по одному. coroutineScope, а не голый async снаружи: дети
+        // привязаны к этой корутине и отменяются вместе с ней.
+        val stages = coroutineScope {
+            pokemon.evolutionChain
+                .map { id -> async { getPokemonInteractor.getById(id) } }
+                .awaitAll()
+        }.map { it.getOrElse { e -> return Result.failure(e) } }
+
+        return Result.success(pokemon.toDetailUi(evolution = stages))
     }
 
     fun onIntent(intent: PokemonDetailIntent) {
         when (intent) {
             is PokemonDetailIntent.EvolutionStageClicked -> navigator.addToBackStack(Screen.Detail(intent.id))
+            is PokemonDetailIntent.RetryRequested -> load()
         }
     }
 }

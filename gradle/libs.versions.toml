@@ -18,6 +18,7 @@ kotlinx-serialization = "1.7.3"
 ktor = "3.1.2"
 coil = "3.5.0"
 navigation3 = "1.1.1"
+lifecycleViewmodelNavigation3 = "2.11.0-beta01"
 material3 = "1.11.0-alpha07"
 
 [libraries]
@@ -42,6 +43,7 @@ navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", ver
 # в её не-Android исходниках стоят заглушки «implemented only in JetBrains fork».
 # Мультиплатформенную половину публикует сам JetBrains, и она стабильная.
 navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+lifecycle-viewmodelNavigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
 kotlinx-coroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }

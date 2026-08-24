@@ -69,6 +69,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.navigation3.runtime)
             implementation(libs.navigation3.ui)
+            implementation(libs.lifecycle.viewmodelNavigation3)
             implementation(libs.kotlinx.coroutinesCore)
             implementation(libs.kotlinx.serializationJson)
             implementation(libs.ktor.client.core)
