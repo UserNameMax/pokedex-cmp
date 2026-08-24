@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import band.effective.education.crossplatform.data.InMemoryPokemonRepository
-import band.effective.education.crossplatform.data.MockPokemonRepository
+import band.effective.education.crossplatform.data.NetworkPokemonRepository
 import band.effective.education.crossplatform.data.network.PokeApi
 import band.effective.education.crossplatform.data.network.pokeApiHttpClient
 import band.effective.education.crossplatform.domain.GetPokemonInteractor
@@ -34,10 +34,9 @@ fun App() {
     AppTheme(darkTheme) {
         // Один интерактор на всё приложение: оба экрана читают одни и те же данные.
         val getPokemonInteractor = remember {
-            // Сервис собран и ждёт: на чекпойнте 1 моки меняются на сетевую
-            // реализацию поверх него — одной строкой, остальная сборка та же.
             val pokeApi = PokeApi(pokeApiHttpClient("https://pokeapi.co/api/v2/"))
-            val remote = MockPokemonRepository()
+            // Моки сменились сетью — одна строка, остальная сборка та же.
+            val remote = NetworkPokemonRepository(pokeApi)
             val local = InMemoryPokemonRepository()
             val loadPokemonUseCase = LoadPokemonUseCase(remote, 20)
             GetPokemonInteractor(loadPokemonUseCase, remote, local)

@@ -1,8 +1,8 @@
 package band.effective.education.crossplatform.ui.model
 
 import androidx.compose.ui.graphics.Color
-import band.effective.education.crossplatform.ui.spriteOf
 import band.effective.education.crossplatform.domain.model.Pokemon
+import band.effective.education.crossplatform.data.network.spriteUrl
 
 /**
  * Экран детали — всё, что на нём нарисовано, уже в том виде, в каком нарисовано.
@@ -48,7 +48,7 @@ fun Pokemon.toDetailUi(evolution: List<Pokemon>): PokemonDetailUi = PokemonDetai
     name = displayName(name),
     number = displayNumber(id),
     genus = genus,
-    imageModel = PokemonImageModel.RImage(spriteOf(this)),
+    imageModel = PokemonImageModel.UrlImage(spriteUrl(id)),
     accent = types.first().toUi().color,
     types = types.map { it.toUi() },
     height = (heightDm / 10.0).toString(),
@@ -61,7 +61,7 @@ fun Pokemon.toDetailUi(evolution: List<Pokemon>): PokemonDetailUi = PokemonDetai
         EvolutionStageUi(
             id = stage.id,
             name = displayName(stage.name),
-            imageModel = PokemonImageModel.RImage(spriteOf(stage)),
+            imageModel = PokemonImageModel.UrlImage(spriteUrl(stage.id)),
             accent = stage.types.first().toUi().color,
             current = stage.id == id,
         )

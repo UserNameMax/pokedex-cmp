@@ -1,8 +1,8 @@
 package band.effective.education.crossplatform.ui.model
 
-import band.effective.education.crossplatform.ui.spriteOf
 import band.effective.education.crossplatform.domain.model.Pokemon
 import band.effective.education.crossplatform.domain.repository.filterByName
+import band.effective.education.crossplatform.data.network.spriteUrl
 
 /**
  * Карточка списка — ровно то, что на ней нарисовано, и уже в том виде,
@@ -11,8 +11,8 @@ import band.effective.education.crossplatform.domain.repository.filterByName
  * Экран ничего не форматирует и доменную модель не видит. Поменялся способ
  * показа — меняется маппер, а не экран и не домен.
  *
- * Спрайт пока из ресурсов: записи — моки, и рисунок есть у каждой. Откуда
- * брать картинку, решает [PokemonImageModel], а не экран.
+ * Спрайт — по URL: свой рисунок в ресурсах есть только у первых двадцати
+ * записей. Откуда брать картинку, решает [PokemonImageModel], а не экран.
  */
 data class PokemonCardUi(
     val id: Int,
@@ -26,7 +26,7 @@ fun Pokemon.toCardUi(): PokemonCardUi = PokemonCardUi(
     id = id,
     name = displayName(name),
     number = displayNumber(id),
-    imageModel = PokemonImageModel.RImage(spriteOf(this)),
+    imageModel = PokemonImageModel.UrlImage(spriteUrl(id)),
     types = types.map { it.toUi() },
 )
 
