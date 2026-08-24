@@ -1,9 +1,9 @@
-package band.effective.education.crossplatform.ui.screens.list
+package band.effective.education.crossplatform.ui.screens.list.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import band.effective.education.crossplatform.domain.PokemonRepository
+import band.effective.education.crossplatform.domain.GetPokemonInteractor
 import band.effective.education.crossplatform.ui.navigation.Navigator
 import kotlin.reflect.KClass
 
@@ -17,11 +17,14 @@ import kotlin.reflect.KClass
  */
 class PokemonListViewModelFactory(
     private val navigator: Navigator,
-    private val repository: PokemonRepository,
+    private val getPokemonInteractor: GetPokemonInteractor,
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
         @Suppress("UNCHECKED_CAST")
-        return PokemonListViewModel(navigator = navigator, repository = repository) as T
+        return PokemonListViewModel(
+            navigator = navigator,
+            getPokemonInteractor = getPokemonInteractor,
+        ) as T
     }
 }

@@ -10,14 +10,16 @@ import band.effective.education.crossplatform.ui.components.CardSurface
 import band.effective.education.crossplatform.ui.components.PokemonBaseStats
 import band.effective.education.crossplatform.ui.components.PokemonImage
 import band.effective.education.crossplatform.ui.model.PokemonCardUi
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PokemonCard(pokemon: PokemonCardUi, modifier: Modifier = Modifier) {
+fun PokemonCard(
+    pokemon: PokemonCardUi,
+    modifier: Modifier = Modifier
+) {
     CardSurface(modifier) {
         Row {
             PokemonImage(
-                painter = painterResource(pokemon.sprite),
+                imageModel = pokemon.imageModel,
                 bgColor = pokemon.types.first().color.copy(alpha = 0.16f),
                 size = 80.dp,
                 pokemonSize = 64.dp

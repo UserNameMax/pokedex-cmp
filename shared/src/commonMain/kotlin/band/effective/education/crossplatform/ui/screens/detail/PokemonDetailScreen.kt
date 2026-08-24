@@ -25,7 +25,7 @@ import band.effective.education.crossplatform.ui.components.PokemonStats
 import band.effective.education.crossplatform.ui.components.Section
 import band.effective.education.crossplatform.ui.components.TypeRow
 import band.effective.education.crossplatform.ui.model.PokemonDetailUi
-import org.jetbrains.compose.resources.painterResource
+import band.effective.education.crossplatform.ui.screens.detail.model.PokemonDetailIntent
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -42,7 +42,7 @@ fun PokemonDetailScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         PokemonImage(
-            painter = painterResource(pokemon.sprite),
+            imageModel = pokemon.imageModel,
             bgColor = accent.copy(alpha = 0.16f),
             size = 200.dp,
             pokemonSize = 164.dp

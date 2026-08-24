@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import band.effective.education.crossplatform.resources.Res
 import band.effective.education.crossplatform.resources.search_hint
+import band.effective.education.crossplatform.ui.screens.list.model.PokemonListIntent
+import band.effective.education.crossplatform.ui.screens.list.model.PokemonListState
 import org.jetbrains.compose.resources.stringResource
 
 /**

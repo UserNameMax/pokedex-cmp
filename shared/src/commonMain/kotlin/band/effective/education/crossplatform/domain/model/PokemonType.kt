@@ -1,4 +1,4 @@
-package band.effective.education.crossplatform.domain
+package band.effective.education.crossplatform.domain.model
 
 /**
  * Тип записи: идентификатор из API (`grass`) и его цвет.

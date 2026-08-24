@@ -1,4 +1,4 @@
-package band.effective.education.crossplatform.ui.screens.list
+package band.effective.education.crossplatform.ui.screens.list.model
 
 import band.effective.education.crossplatform.ui.model.PokemonCardUi
 

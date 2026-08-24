@@ -25,4 +25,9 @@
     <string name="type_poison">Яд</string>
     <string name="type_water">Вода</string>
     <string name="search_hint">Поиск по имени</string>
+    <string name="list_loading_next">Загружается следующая страница…</string>
+    <string name="list_error">Не удалось загрузить: %1$s</string>
+    <string name="list_retry">Повторить</string>
+    <string name="list_load_more_failed">Не удалось загрузить следующую страницу</string>
+    <string name="list_empty">Ничего не нашлось</string>
 </resources>

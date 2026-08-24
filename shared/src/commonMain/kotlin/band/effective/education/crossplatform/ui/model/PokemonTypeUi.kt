@@ -1,7 +1,7 @@
 package band.effective.education.crossplatform.ui.model
 
 import androidx.compose.ui.graphics.Color
-import band.effective.education.crossplatform.domain.PokemonType
+import band.effective.education.crossplatform.domain.model.PokemonType
 
 /**
  * Тип так, как его рисуют: подпись и цвет, уже переведённый в `Color`.

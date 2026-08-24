@@ -1,10 +1,10 @@
-package band.effective.education.crossplatform.ui.screens.list
+package band.effective.education.crossplatform.ui.screens.list.model
 
 /**
  * Намерения — всё, что пользователь может сделать с экраном.
  *
  * Экран не меняет состояние сам, он только сообщает о намерении. Менять — работа
- * [PokemonListViewModel]. Отсюда однонаправленность: вниз состояние, вверх намерения,
+ * [band.effective.education.crossplatform.ui.screens.list.view_model.PokemonListViewModel]. Отсюда однонаправленность: вниз состояние, вверх намерения,
  * и никаких путей в обход.
  *
  * Каждое действие пользователя — отдельный вариант этого интерфейса.

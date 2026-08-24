@@ -25,4 +25,9 @@
     <string name="type_poison">Poison</string>
     <string name="type_water">Water</string>
     <string name="search_hint">Search by name</string>
+    <string name="list_loading_next">Loading next page…</string>
+    <string name="list_error">Couldn't load: %1$s</string>
+    <string name="list_retry">Retry</string>
+    <string name="list_load_more_failed">Couldn't load the next page</string>
+    <string name="list_empty">Nothing found</string>
 </resources>

@@ -1,9 +1,9 @@
 package band.effective.education.crossplatform.data
 
-import band.effective.education.crossplatform.domain.Ability
-import band.effective.education.crossplatform.domain.Pokemon
-import band.effective.education.crossplatform.domain.PokemonType
-import band.effective.education.crossplatform.domain.Stat
+import band.effective.education.crossplatform.domain.model.Ability
+import band.effective.education.crossplatform.domain.model.Pokemon
+import band.effective.education.crossplatform.domain.model.PokemonType
+import band.effective.education.crossplatform.domain.model.Stat
 
 /**
  * Моки первой вехи: двадцать записей, снятых с PokéAPI 22.08.2026.

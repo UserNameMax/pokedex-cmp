@@ -1,4 +1,4 @@
-package band.effective.education.crossplatform.domain
+package band.effective.education.crossplatform.domain.model
 
 /**
  * Одна запись каталога — доменная модель.
