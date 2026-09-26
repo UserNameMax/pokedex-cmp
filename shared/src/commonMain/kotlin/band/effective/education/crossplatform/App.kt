@@ -1,38 +1,39 @@
 package band.effective.education.crossplatform
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import band.effective.education.crossplatform.data.Country
-
-import band.effective.education.crossplatform.data.get_countries
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import band.effective.education.crossplatform.navigation.AppRoute
+import band.effective.education.crossplatform.navigation.AppViewModel
+import band.effective.education.crossplatform.screen.CountryDetailScreen
 import band.effective.education.crossplatform.screen.CountryListScreen
-import band.effective.education.crossplatform.ui.components.CountryCard
-import band.effective.education.crossplatform.ui.components.CountryDetailed
-import band.effective.education.crossplatform.ui.components.StatBlock
-import band.effective.education.crossplatform.ui.model.CountryCardUI
-import band.effective.education.crossplatform.ui.model.toCardsUI
+import band.effective.education.crossplatform.ui.AppScaffold
 
 @Composable
 fun App() {
-        MaterialTheme{
-            Scaffold (modifier = Modifier.background(Color(0xFFFFFF)),
-            topBar = {
-                TopAppBar({Text(text="test")})
-            }
-            ) {
-                CountryListScreen()
-            }
+    MaterialTheme {
+        val viewModel: AppViewModel = viewModel { AppViewModel() }
+        val backStack by viewModel.backStack.collectAsState()
+        val current = backStack.last()
 
+        AppScaffold(
+            onBack = if (backStack.size > 1) {
+                { viewModel.onBack() }
+            } else {
+                null
+            },
+        ) {
+            when (val route = current) {
+                is AppRoute.CountryList -> CountryListScreen(
+                    onCountryClick = viewModel::onCountryClick,
+                )
+                is AppRoute.CountryDetail -> CountryDetailScreen(
+                    countryId = route.countryId,
+                    onCountryClick = viewModel::onCountryClick
+                )
+            }
         }
+    }
 }

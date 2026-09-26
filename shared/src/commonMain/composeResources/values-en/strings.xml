@@ -10,4 +10,5 @@
     <string name="country_gdp">GDP</string>
     <string name = "country_code">Country Code</string>
     <string name = "people_unit">people</string>
+    <string name = "country_neighbours">Country neighbours</string>
 </resources>

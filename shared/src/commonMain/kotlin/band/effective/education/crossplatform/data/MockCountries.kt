@@ -223,4 +223,3 @@ val CountryMocks: List<Country> = listOf(
     )
 )
 
-fun get_countries(): List<Country> = CountryMocks

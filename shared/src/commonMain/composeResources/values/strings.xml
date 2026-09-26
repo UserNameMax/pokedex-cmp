@@ -10,4 +10,5 @@
     <string name="country_gdp">ВВП</string>
     <string name = "country_code">Код страны</string>
     <string name = "people_unit">чел.</string>
+    <string name = "country_neighbours">Страны-соседи</string>
 </resources>
