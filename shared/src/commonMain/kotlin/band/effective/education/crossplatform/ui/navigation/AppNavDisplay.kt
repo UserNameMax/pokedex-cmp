@@ -15,10 +15,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import band.effective.education.crossplatform.Screen
-import band.effective.education.crossplatform.detail.PokemonDetailViewModel
-import band.effective.education.crossplatform.detail.PokemonDetailViewModelFactory
-import band.effective.education.crossplatform.list.PokemonListViewModel
-import band.effective.education.crossplatform.list.PokemonListViewModelFactory
+import band.effective.education.crossplatform.ui.screens.detail.PokemonDetailViewModel
+import band.effective.education.crossplatform.ui.screens.detail.PokemonDetailViewModelFactory
+import band.effective.education.crossplatform.ui.screens.list.PokemonListViewModel
+import band.effective.education.crossplatform.ui.screens.list.PokemonListViewModelFactory
 import band.effective.education.crossplatform.ui.screens.detail.PokemonDetailScreen
 import band.effective.education.crossplatform.ui.screens.list.PokemonListScreen
 

@@ -10,9 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import band.effective.education.crossplatform.data.PokemonRepositoryImpl
-import band.effective.education.crossplatform.detail.PokemonDetailViewModelFactory
+import band.effective.education.crossplatform.ui.screens.detail.PokemonDetailViewModelFactory
 import band.effective.education.crossplatform.domain.PokemonRepository
-import band.effective.education.crossplatform.list.PokemonListViewModelFactory
+import band.effective.education.crossplatform.ui.screens.list.PokemonListViewModelFactory
 import band.effective.education.crossplatform.resources.Res
 import band.effective.education.crossplatform.resources.action_toggle_theme
 import band.effective.education.crossplatform.resources.ic_theme

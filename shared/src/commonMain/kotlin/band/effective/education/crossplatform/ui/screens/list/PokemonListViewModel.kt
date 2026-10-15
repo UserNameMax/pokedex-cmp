@@ -1,4 +1,4 @@
-package band.effective.education.crossplatform.list
+package band.effective.education.crossplatform.ui.screens.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import band.effective.education.crossplatform.detail.PokemonDetailIntent
 import band.effective.education.crossplatform.resources.Res
 import band.effective.education.crossplatform.resources.section_abilities
 import band.effective.education.crossplatform.resources.section_evolution

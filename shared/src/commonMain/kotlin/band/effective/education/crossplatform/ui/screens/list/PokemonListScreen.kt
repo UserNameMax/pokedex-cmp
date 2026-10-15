@@ -13,8 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import band.effective.education.crossplatform.list.PokemonListIntent
-import band.effective.education.crossplatform.list.PokemonListState
 import band.effective.education.crossplatform.resources.Res
 import band.effective.education.crossplatform.resources.search_hint
 import org.jetbrains.compose.resources.stringResource
